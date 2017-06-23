@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyy.activity.mapper.activity.ActivityMapper">
+	<resultMap id="baseResult" type="com.cyy.activity.model.activity.Activity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="bannerUrl" property="bannerUrl" jdbcType="VARCHAR" />
+		<result column="contentUrl" property="contentUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,name,description,bannerUrl,contentUrl,status
+	</sql>
+	
+	<select id="findById" parameterType="java.lang.Long" resultMap="baseResult">
+		select 
+		<include refid="Base_Column_List" />
+		from activity t where t.id = #{id}
+	</select>
+	
+	<select id="find" parameterType="com.cyy.activity.base.BaseSearch" resultMap="baseResult">
+		select 
+		<include refid="Base_Column_List" />
+		from activity t  
+		<where>
+			<if test="name != null">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="com.cyy.activity.model.activity.Activity">
+		insert into activity (name,description,bannerUrl,contentUrl,status)values(#{name},#{description},#{bannerUrl},#{contentUrl},#{status})
+	</insert>
+	
+</mapper>
